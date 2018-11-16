@@ -8,6 +8,12 @@ exports._launch = function(options) {
   };
 };
 
+exports._connect = function(options) {
+  return function() {
+    return puppeteer.connect(options);
+  };
+};
+
 exports._newPage = function(browser) {
   return function() {
     return browser.newPage();

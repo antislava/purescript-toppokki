@@ -37,6 +37,18 @@ launch
   -> Aff Browser
 launch = runPromiseAffE1 _launch
 
+-- https://github.com/GoogleChrome/puppeteer/blob/master/docs/api.md#puppeteerconnectoptions
+type ConnectOptions =
+  ( browserWSEndpoint :: String
+  )
+
+connect
+  :: forall options trash
+   . Row.Union options trash ConnectOptions
+  => { | options }
+  -> Aff Browser
+connect = runPromiseAffE1 _connect
+
 newPage :: Browser -> Aff Page
 newPage = runPromiseAffE1 _newPage
 
@@ -182,6 +194,7 @@ runPromiseAffE4 f a b c d =  Promise.toAffE $ FU.runFn4 f a b c d
 
 foreign import puppeteer :: Puppeteer
 foreign import _launch :: forall options. FU.Fn1 options (Effect (Promise Browser))
+foreign import _connect :: forall options. FU.Fn1 options (Effect (Promise Browser))
 foreign import _newPage :: FU.Fn1 Browser (Effect (Promise Page))
 foreign import _goto :: FU.Fn2 URL Page (Effect (Promise Unit))
 foreign import _close :: FU.Fn1 Browser (Effect (Promise Unit))
